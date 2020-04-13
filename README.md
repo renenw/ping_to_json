@@ -20,3 +20,20 @@ Clone the repo, or grab ping.rb from the repo and save it locally.
 Install ruby: `sudo apt-get install ruby`
 
 Run it: `ruby ping.rb google.com`
+
+## For completeness...
+
+To monitor bandwidth (as opposed to latency), I use Ookla's `speedtest` against two key domestic servers: My ISP, and a the key domestic exchange (SAIX). I first tried to use speedtest (and speedtest-cli) to test internationally. But it there are two key problems with thi approach:
+
+1. Ookla clearly want you to test "locally". Their documentation suggests that their tests are optimised as such. And the server listings don't include, and the command line code, will not allow you to test against, far flung servers.
+1. Ping is cheap - it can run all day. The Ookla tests are somewhat more onerous. Accordingly, I run the heavy tests once a day, and then ping every minute.
+
+My cron file is as follows:
+
+```
+  30  3    *   *   *   speedtest --json --server 5921 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_cybersmart
+  40  3    *   *   *   speedtest --json --server 1879 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_saix
+
+   *  *    *   *   *   ruby ping.rb  3.80.0.0 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=ping_us_east_1
+   *  *    *   *   *   ruby ping.rb 3.248.0.0 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=ping_eu_west_1
+```

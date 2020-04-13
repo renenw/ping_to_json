@@ -6,7 +6,7 @@ COUNT   = 10
 if target.nil? || target==''
   p 'A target server is required'
 else
-  results = `ping -c#{COUNT} -q #{target}`
+  results = `ping -c2 -q #{target}`
   details = results.split(/\n/)
 
   packet_loss_percentage = details.last(2)[0][/(\d{1,3})\%\spacket/,1]
@@ -18,5 +18,5 @@ else
     rtt:                    rtt[1].split('/').zip(rtt[3].split('/')).to_h,
   }
 
-  puts h.to_json
+  STDOUT.puts h.to_json
 end

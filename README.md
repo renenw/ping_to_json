@@ -33,8 +33,8 @@ There's also a catch with cron: it doesn't pipe in the way you'd expect. As such
 My cron file is as follows:
 
 ```
-  30  3    *   *   *   bash -c 'speedtest --json --server 5921 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_cybersmart'
-  40  3    *   *   *   bash -c 'speedtest --json --server 1879 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_saix'
+  30  3    *   *   *   bash -c 'speedtest --accept-license --format=json --server-id 5921 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_cybersmart'
+  40  3    *   *   *   bash -c 'peedtest --accept-license --format=json --server-id 1879 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=network_saix'
 
    *  *    *   *   *   bash -c 'ruby ping.rb  3.80.0.0 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=ping_us_east_1'
    *  *    *   *   *   bash -c 'ruby ping.rb 3.248.0.0 | curl -H "Content-Type: application/json" -X POST -d "$(</dev/stdin)" http://<target>/?source=ping_eu_west_1'

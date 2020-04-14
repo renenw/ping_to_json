@@ -6,7 +6,7 @@ COUNT   = 10
 if target.nil? || target==''
   p 'A target server is required'
 else
-  results = `ping -c2 -q #{target}`
+  results = `ping -c#{COUNT} -q #{target}`
   details = results.split(/\n/)
 
   packet_loss_percentage = details.last(2)[0][/(\d{1,3})\%\spacket/,1]

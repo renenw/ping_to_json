@@ -2,7 +2,12 @@
 
 Allows you to easily ping a remote server from a script.
 
-The script calls `ping` and packages the results as JSON for piping to other bash scripts.
+The script calls `ping` and packages the results as JSON for piping to other bash scripts. Internally, it calls the standard system ping command: `ping -c#{COUNT} -q #{target}`:
+
+```
+pi@iot-relay:~ $ ruby ping.rb google.com
+{"target":"google.com","pings":10,"packet_loss_percentage":"0","rtt":{"min":"27.584","avg":"28.854","max":"31.143","mdev":"1.505"}}
+```
 
 I use this script, run by cron on a Raspberry Pi, to log the latency on international traffic leaving my home. In my case, using the IP addresses listed in Amazon's *EC2 Reachability Test* [list](http://ec2-reachability.amazonaws.com/), I ping `us_east_1` (Virginia), and `eu_west_1` (Dublin):
 
